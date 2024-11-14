@@ -15,6 +15,7 @@
 #define RESOLUCAO 10000
 #define NUM_TICKS 5
 #define DUTY_TICK 2
+#define DELAY_TICKS 1
 
 #define TRUE 1
 #define FALSE 0
@@ -75,7 +76,6 @@ void app_main(void)
 	// gerador 1
 	mcpwm_generator_config_t gen_1_cfg = {
 		.gen_gpio_num = PB,
-		.flags.invert_pwm = TRUE
 	};
 	mcpwm_gen_handle_t gen_1 = NULL;
 	mcpwm_new_generator(oper_0, &gen_1_cfg, &gen_1);
@@ -83,6 +83,15 @@ void app_main(void)
 	mcpwm_generator_set_action_on_compare_event(gen_1, gen_0_cmpr_action);
 	
 	// tempo morto
+	mcpwm_dead_time_config_t dead_time_config = {
+		.posedge_delay_ticks = DELAY_TICKS,
+		.negedge_delay_ticks = 0
+	};
+	mcpwm_generator_set_dead_time(gen_0, gen_0, &dead_time_config);
+	dead_time_config.posedge_delay_ticks = 0;
+	dead_time_config.negedge_delay_ticks = DELAY_TICKS;
+	dead_time_config.flags.invert_output = TRUE;
+	mcpwm_generator_set_dead_time(gen_0, gen_1, &dead_time_config);
 	
 	mcpwm_timer_enable(timer_0);
 	mcpwm_timer_start_stop(timer_0, MCPWM_TIMER_START_NO_STOP);
