@@ -9,11 +9,11 @@
 #include "driver/mcpwm_gen.h"
 #include "soc/clk_tree_defs.h"
 
-// a onda tem 100kHz, porém é dividida em 100 partes, logo a resolução 100000000
+// a onda tem 100kHz, porém é dividida em 100 partes, logo a resolução 10000000
 
 // definicoes
 #define TIMER_USADO 0
-#define RESOLUCAO 100000000
+#define RESOLUCAO 10000000
 #define NUM_TICKS 100
 #define DUTY_TICK 50
 #define DELAY_TICKS 1
